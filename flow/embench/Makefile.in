@@ -10,6 +10,7 @@ EMBENCH_FAIL        = 0x8000000c
 EMBENCH_SRCS        = $(FRV_HOME)/flow/embench/boot.S \
                       $(FRV_HOME)/flow/embench/main.c \
                       $(FRV_HOME)/flow/embench/util.S \
+                      $(FRV_HOME)/flow/embench/embench.c \
                       $(EMBENCH_BUILD)/support/beebsc.o \
 
 EMBENCH_CFLAGS      = -O2 -mabi=ilp32 -march=rv32imc -nostartfiles \
@@ -43,7 +44,8 @@ embench-run-%: $(EMBENCH_BUILD)/src/%/benchmark.srec $(VL_OUT)
 	$(VL_OUT) +IMEM=$< \
               +IMEM_MAX_STALL=0 +DMEM_MAX_STALL=0 \
 	          +TIMEOUT=$(EMBENCH_TIMEOUT) \
-	          +PASS_ADDR=$(EMBENCH_PASS) +FAIL_ADDR=$(EMBENCH_FAIL)
+	          +PASS_ADDR=$(EMBENCH_PASS) +FAIL_ADDR=$(EMBENCH_FAIL) \
+        | tee $(basename $<).rpt
 
 embench-run-all: $(addprefix embench-run-,$(EMBENCH_BENCHMARKS))
 
