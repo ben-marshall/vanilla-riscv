@@ -23,6 +23,10 @@ output wire [ 4:0] s1_rs2_addr   ,
 input  wire [XL:0] s1_rs1_rdata  ,
 input  wire [XL:0] s1_rs2_rdata  ,
 
+output wire        pcf_req       , // Predicted control flow change
+output wire [XL:0] pcf_target    , // Predicted control flow change target
+output wire        pcf_ack       , // Predicted control flow change ack
+
 input  wire        cf_req        , // Control flow change request
 input  wire [XL:0] cf_target     , // Control flow change target
 input  wire        cf_ack        , // Control flow change acknowledge.
@@ -546,11 +550,30 @@ wire [31:0] csr_addr = {20'b0, n_s2_imm[31:20]};
 wire [31:0] csr_imm  = {27'b0, s1_rs1_addr    };
 
 //
+// Static branch prediction
+// -------------------------------------------------------------------------
+
+wire   pcf_change_instr = 
+    dec_beq        || dec_c_beqz     || dec_bge        || dec_bgeu       ||
+    dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ||
+    dec_c_j        || dec_c_jal      || dec_jal         ;
+
+assign pcf_req      = pcf_change_instr;
+
+assign pcf_target   = pc_plus_imm;
+
+wire   pcf_stall    = pcf_req && !pcf_ack;
+
+
+//
 // PC computation
 // -------------------------------------------------------------------------
 
 reg  [XL:0] program_counter;
-wire [XL:0] n_program_counter = program_counter + {29'b0, n_s2_size,1'b0};
+
+wire [XL:0] n_pc_offset       = {29'b0, n_s2_size,1'b0}   ;
+
+wire [XL:0] n_program_counter = program_counter + n_pc_offset;;
 
 always @(posedge g_clk) begin
     if(!g_resetn) begin

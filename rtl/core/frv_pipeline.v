@@ -117,10 +117,16 @@ parameter TRACE_INSTR_WORD = 1'b1;
 assign      instr_ret = trs_valid;
 
 //
-// Control flow change bus.
+// Control flow change bus. From writeback.
 wire        cf_req     ; // Control flow change request
 wire [XL:0] cf_target  ; // Control flow change destination
 wire        cf_ack     ; // Control flow change acknolwedge
+
+//
+// Predicted control flow change bus. From decode.
+wire        pcf_req    ; // Predicted Control flow change request
+wire [XL:0] pcf_target ; // Predicted Control flow change destination
+wire        pcf_ack    ; // Predicted Control flow change acknolwedge
 
 //
 // CSR access bus.
@@ -330,9 +336,12 @@ frv_pipeline_decode #(
 .s1_rs2_addr        (s1_rs2_addr        ),
 .s1_rs1_rdata       (fwd_rs1_rdata      ),
 .s1_rs2_rdata       (fwd_rs2_rdata      ),
-.cf_req             (cf_req             ), // Control flow change
+.cf_req             (cf_req             ), // Control flow change request
 .cf_target          (cf_target          ), // Control flow change target
 .cf_ack             (cf_ack             ), // Acknowledge control flow change
+.pcf_req            (pcf_req            ), // Control flow change request
+.pcf_target         (pcf_target         ), // Control flow change target
+.pcf_ack            (pcf_ack            ), // Acknowledge control flow change
 `ifdef RVFI
 .rvfi_s2_rs1_addr   (rvfi_s2_rs1_addr   ),
 .rvfi_s2_rs2_addr   (rvfi_s2_rs2_addr   ),
