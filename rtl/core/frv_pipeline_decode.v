@@ -67,7 +67,7 @@ wire   p_s2_busy;
 
 wire pipe_progress = s1_valid && !s1_busy;
 
-assign s1_busy      = p_s2_busy || s1_bubble;
+assign s1_busy      = p_s2_busy || s1_bubble || pcf_stall;
 wire   n_s2_valid   = s1_valid  || s1_bubble;
 
 wire [ 4:0] n_s2_rd         ; // Destination register address
@@ -558,7 +558,7 @@ wire   pcf_change_instr =
     dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ||
     dec_c_j        || dec_c_jal      || dec_jal         ;
 
-assign s1_cf_req    = pcf_change_instr;
+assign s1_cf_req    = pcf_change_instr && !s1_bubble;
 
 assign s1_cf_target = pc_plus_imm;
 
@@ -619,7 +619,7 @@ wire oprc_src_pcim = n_s2_opr_src[DIS_OPRC_PCIM];
 assign n_s2_opr_c = 
     {XLEN{oprc_src_rs2    }} & s1_rs2_rdata   |
     {XLEN{oprc_src_csra   }} & csr_addr       |
-    {XLEN{oprc_src_pcim   }} & n_program_counter;
+    {XLEN{oprc_src_pcim   }} & pc_plus_imm    ;
 
 //
 // Pipeline Register.

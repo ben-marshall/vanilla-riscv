@@ -134,6 +134,8 @@ wire [XL:0] n_s4_pc = s4_pc + {29'b0, s4_size,1'b0};
 always @(posedge g_clk) begin
     if(!g_resetn) begin
         s4_pc <= FRV_PC_RESET_VALUE;
+    end else if(cfu_pred_correct) begin
+        s4_pc <= s4_opr_a;
     end else if(cf_req && cf_ack) begin
         s4_pc <= cf_target;
     end else if(pipe_progress) begin
@@ -197,6 +199,10 @@ wire [XL:0] csr_gpr_wdata   = csr_rdata;
 // Functional Unit: CFU
 // -------------------------------------------------------------------------
 
+// Correctly predicted control flow changes
+wire cfu_pred_correct= fu_cfu && (s4_uop == CFU_TAKEN       ||
+                                  s4_uop == CFU_JALI        );
+
 // A "normal" control flow change due to an (in)direct jump or conditional
 // branch instruction.
 wire cfu_cf_taken   = fu_cfu && (s4_uop == CFU_NOT_TAKEN    ||
@@ -233,7 +239,7 @@ assign cf_req       = cf_req_noint || trap_int  ;
 wire cfu_finish_now = cf_req && cf_ack;
 
 wire [31:0] cf_target_noint = 
-    {XLEN{cfu_cf_taken}}  & s4_opr_a  |
+    {XLEN{cfu_cf_taken}}  & n_s4_pc   |
     {XLEN{cfu_mret    }}  & csr_mepc  ;
 
 // Given a control flow change, this is where we are going.
