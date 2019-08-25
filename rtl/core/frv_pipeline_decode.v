@@ -558,7 +558,7 @@ wire   pcf_change_instr =
     dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ||
     dec_c_j        || dec_c_jal      || dec_jal         ;
 
-assign s1_cf_req    = pcf_change_instr && !s1_bubble;
+assign s1_cf_req    = pcf_change_instr && !s1_bubble && !p_s2_busy;
 
 assign s1_cf_target = pc_plus_imm;
 
