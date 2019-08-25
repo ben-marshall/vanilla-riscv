@@ -65,7 +65,7 @@ The branch predictor:
 
 ---
 
-Todo: Fix writeback stage PC tracking.
+~~Todo: Fix writeback stage PC tracking.~~
 
 - Transmit branch target address down the pipeline from decode in
   `opr_c` as it used to be.
@@ -78,3 +78,7 @@ Todo: Fix writeback stage PC tracking.
   predicted branch causes it's value to be set to the branch target
   address transmitted down from the decode stage.
 
+Todo: Fix jump register instructions
+
+- They need to source their target addresses from `s4_opr_ra` but currently
+  do not.
