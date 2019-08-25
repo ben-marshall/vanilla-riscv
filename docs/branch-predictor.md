@@ -41,6 +41,8 @@ The branch predictor:
 
 - The downstream stages are *not* flushed.
 
+  - The Fetch stage *is* flushed.
+
 - Instead of the target address, `opr_c` is replaced with the natural
   *next* program counter of the instruction.
 

@@ -117,16 +117,25 @@ parameter TRACE_INSTR_WORD = 1'b1;
 assign      instr_ret = trs_valid;
 
 //
-// Control flow change bus. From writeback.
-wire        cf_req     ; // Control flow change request
-wire [XL:0] cf_target  ; // Control flow change destination
-wire        cf_ack     ; // Control flow change acknolwedge
+// Predicted control flow change bus. From Writeback.
+wire        s4_cf_req    ; // Predicted Control flow change request
+wire [XL:0] s4_cf_target ; // Predicted Control flow change destination
+wire        s4_cf_ack    = cf_ack  ;
+wire        s4_cf_taken  = s4_cf_req && s4_cf_ack;
 
 //
 // Predicted control flow change bus. From decode.
-wire        pcf_req    ; // Predicted Control flow change request
-wire [XL:0] pcf_target ; // Predicted Control flow change destination
-wire        pcf_ack    ; // Predicted Control flow change acknolwedge
+wire        s1_cf_req    ; // Predicted Control flow change request
+wire [XL:0] s1_cf_target ; // Predicted Control flow change destination
+wire        s1_cf_ack    = cf_ack && !s4_cf_req;
+wire        s1_cf_taken  = s1_cf_req && s1_cf_ack;
+
+//
+// Control flow change bus. Into fetch from decode/writeback.
+wire        cf_req     = s4_cf_req || s1_cf_req;
+wire [XL:0] cf_target  = s4_cf_req ? s4_cf_target : s1_cf_target;
+wire        cf_ack     ;
+wire        cf_taken   = cf_req && cf_ack;
 
 //
 // CSR access bus.
@@ -152,11 +161,11 @@ wire [XL:0] trap_mtval ; // Value associated with the trap.
 wire [XL:0] trap_pc    ; // PC value associated with the trap.
 
 
-wire        s0_flush   = cf_req && cf_ack; // Flush stage
-wire        s1_flush   = cf_req && cf_ack; // Flush pipe stage register.
-wire        s2_flush   = cf_req && cf_ack; // Flush this pipeline stage.
-wire        s3_flush   = cf_req && cf_ack; // Flush this pipeline stage.
-wire        s4_flush   = cf_req && cf_ack; // Flush this pipeline stage.
+wire        s0_flush   = s4_cf_taken || s1_cf_taken;
+wire        s1_flush   = s4_cf_taken;
+wire        s2_flush   = s4_cf_taken;
+wire        s3_flush   = s4_cf_taken;
+wire        s4_flush   = s4_cf_taken;
 
 wire        s0_busy       ; // Stall stage
 
@@ -339,9 +348,9 @@ frv_pipeline_decode #(
 .cf_req             (cf_req             ), // Control flow change request
 .cf_target          (cf_target          ), // Control flow change target
 .cf_ack             (cf_ack             ), // Acknowledge control flow change
-.pcf_req            (pcf_req            ), // Control flow change request
-.pcf_target         (pcf_target         ), // Control flow change target
-.pcf_ack            (pcf_ack            ), // Acknowledge control flow change
+.s1_cf_req          (s1_cf_req          ), // Control flow change request
+.s1_cf_target       (s1_cf_target       ), // Control flow change target
+.s1_cf_ack          (s1_cf_ack          ), // Acknowledge control flow change
 `ifdef RVFI
 .rvfi_s2_rs1_addr   (rvfi_s2_rs1_addr   ),
 .rvfi_s2_rs2_addr   (rvfi_s2_rs2_addr   ),
@@ -547,9 +556,9 @@ frv_pipeline_writeback #(
 .csr_addr         (csr_addr         ), // Address of the CSR to access.
 .csr_wdata        (csr_wdata        ), // Data to be written to a CSR
 .csr_rdata        (csr_rdata        ), // CSR read data
-.cf_req           (cf_req           ), // Control flow change request
-.cf_target        (cf_target        ), // Control flow change target
-.cf_ack           (cf_ack           ), // Control flow change acknowledge.
+.cf_req           (s4_cf_req        ), // Control flow change request
+.cf_target        (s4_cf_target     ), // Control flow change target
+.cf_ack           (s4_cf_ack        ), // Control flow change acknowledge.
 .hold_lsu_req     (hold_lsu_req     ), // Don't make LSU requests yet.
 .mmio_rdata       (mmio_rdata       ), // MMIO read data
 .mmio_error       (mmio_error       ), // MMIO error

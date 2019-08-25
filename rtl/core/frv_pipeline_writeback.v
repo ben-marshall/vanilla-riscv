@@ -199,9 +199,8 @@ wire [XL:0] csr_gpr_wdata   = csr_rdata;
 
 // A "normal" control flow change due to an (in)direct jump or conditional
 // branch instruction.
-wire cfu_cf_taken   = fu_cfu && (s4_uop == CFU_TAKEN  ||
-                                 s4_uop == CFU_JALI   ||
-                                 s4_uop == CFU_JALR   );
+wire cfu_cf_taken   = fu_cfu && (s4_uop == CFU_NOT_TAKEN    ||
+                                 s4_uop == CFU_JALR         );
 
 // "Special" control flow change instructions which jump to the current MTVEC
 wire cfu_ebreak     = fu_cfu && s4_uop == CFU_EBREAK;

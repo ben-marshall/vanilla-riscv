@@ -23,9 +23,9 @@ output wire [ 4:0] s1_rs2_addr   ,
 input  wire [XL:0] s1_rs1_rdata  ,
 input  wire [XL:0] s1_rs2_rdata  ,
 
-output wire        pcf_req       , // Predicted control flow change
-output wire [XL:0] pcf_target    , // Predicted control flow change target
-output wire        pcf_ack       , // Predicted control flow change ack
+output wire        s1_cf_req     , // Predicted control flow change
+output wire [XL:0] s1_cf_target  , // Predicted control flow change target
+output wire        s1_cf_ack     , // Predicted control flow change ack
 
 input  wire        cf_req        , // Control flow change request
 input  wire [XL:0] cf_target     , // Control flow change target
@@ -558,11 +558,11 @@ wire   pcf_change_instr =
     dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ||
     dec_c_j        || dec_c_jal      || dec_jal         ;
 
-assign pcf_req      = pcf_change_instr;
+assign s1_cf_req    = pcf_change_instr;
 
-assign pcf_target   = pc_plus_imm;
+assign s1_cf_target = pc_plus_imm;
 
-wire   pcf_stall    = pcf_req && !pcf_ack;
+wire   pcf_stall    = s1_cf_req && !s1_cf_ack;
 
 
 //
@@ -619,7 +619,7 @@ wire oprc_src_pcim = n_s2_opr_src[DIS_OPRC_PCIM];
 assign n_s2_opr_c = 
     {XLEN{oprc_src_rs2    }} & s1_rs2_rdata   |
     {XLEN{oprc_src_csra   }} & csr_addr       |
-    {XLEN{oprc_src_pcim   }} & pc_plus_imm    ;
+    {XLEN{oprc_src_pcim   }} & n_program_counter;
 
 //
 // Pipeline Register.
