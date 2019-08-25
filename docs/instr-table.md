@@ -126,7 +126,7 @@ Instruction  | `opr_a`      | `opr_b`       | `opr_c`
 `c_addi16sp `|  rs1         |  rs2          |  0
 `c_addi4spn `|  rs1         |  rs2          |  0
 `c_mv       `|  rs1         |  0            |  0
-`auipc      `|  PC+imm      |  0            |  0
+`auipc      `|  PC          |  imm          |  0
 `c_sub      `|  rs1         |  rs2          |  0
 `sub        `|  rs1         |  rs2          |  0
 `and        `|  rs1         |  rs2          |  0
