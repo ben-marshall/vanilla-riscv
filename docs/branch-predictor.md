@@ -78,7 +78,7 @@ The branch predictor:
   predicted branch causes it's value to be set to the branch target
   address transmitted down from the decode stage.
 
-Todo: Fix jump register instructions
+~~Todo: Fix jump register instructions~~
 
 - They need to source their target addresses from `s4_opr_ra` but currently
   do not.

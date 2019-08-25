@@ -205,8 +205,9 @@ wire cfu_pred_correct= fu_cfu && (s4_uop == CFU_TAKEN       ||
 
 // A "normal" control flow change due to an (in)direct jump or conditional
 // branch instruction.
-wire cfu_cf_taken   = fu_cfu && (s4_uop == CFU_NOT_TAKEN    ||
-                                 s4_uop == CFU_JALR         );
+wire cfu_tgt_branch = fu_cfu &&  s4_uop == CFU_NOT_TAKEN    ;
+wire cfu_tgt_reg    = fu_cfu &&  s4_uop == CFU_JALR         ;
+wire cfu_cf_taken   = cfu_tgt_branch || cfu_tgt_reg;
 
 // "Special" control flow change instructions which jump to the current MTVEC
 wire cfu_ebreak     = fu_cfu && s4_uop == CFU_EBREAK;
@@ -239,8 +240,9 @@ assign cf_req       = cf_req_noint || trap_int  ;
 wire cfu_finish_now = cf_req && cf_ack;
 
 wire [31:0] cf_target_noint = 
-    {XLEN{cfu_cf_taken}}  & n_s4_pc   |
-    {XLEN{cfu_mret    }}  & csr_mepc  ;
+    {XLEN{cfu_tgt_branch}}  & n_s4_pc   |
+    {XLEN{cfu_tgt_reg   }}  & s4_opr_a  |
+    {XLEN{cfu_mret      }}  & csr_mepc  ;
 
 // Given a control flow change, this is where we are going.
 assign cf_target    = 
