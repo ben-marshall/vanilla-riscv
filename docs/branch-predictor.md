@@ -62,3 +62,19 @@ The branch predictor:
 - Control flow changes now only occur iff the `uop` indicates that the
   branch was explicitly *not taken*, or if it is a non-pc-relative
   control flow change.
+
+---
+
+Todo: Fix writeback stage PC tracking.
+
+- Transmit branch target address down the pipeline from decode in
+  `opr_c` as it used to be.
+
+- If we get to writeback and find an incorrectly predicted branch, just
+  the writeback stage `s4_n_pc` as the target address for the "correcting"
+  jump.
+
+- Add a selection to the `s4_pc` update process, where any *correctly*
+  predicted branch causes it's value to be set to the branch target
+  address transmitted down from the decode stage.
+
