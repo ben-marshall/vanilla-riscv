@@ -488,7 +488,7 @@ assign n_s2_opr_src[DIS_OPRA_RS1 ] = // Operand A sources RS1
     dec_divu       || dec_mul        || dec_mulh       || dec_mulhsu     ||
     dec_mulhu      || dec_rem        || dec_remu       ;
 
-assign n_s2_opr_src[DIS_OPRA_PCIM] = // Operand A sources PC+immediate
+assign n_s2_opr_src[DIS_OPRA_PC  ] = // Operand A sources PC+immediate
     dec_auipc       ;
 
 assign n_s2_opr_src[DIS_OPRA_CSRI] = // Operand A sources CSR mask immediate
@@ -511,7 +511,7 @@ assign n_s2_opr_src[DIS_OPRB_IMM ] = // Operand B sources immediate
     dec_lui        || dec_c_li       || dec_c_lui      || dec_ori        ||
     dec_xori       || dec_slti       || dec_sltiu      || dec_srai       ||
     dec_c_srai     || dec_c_srli     || dec_srli       || dec_slli       ||
-    dec_c_slli                       || dec_jalr       || dec_lb         ||
+    dec_c_slli     || dec_auipc      || dec_jalr       || dec_lb         ||
     dec_lbu        || dec_lh         || dec_lhu        || dec_lw         ||
     dec_c_lw       || dec_c_lwsp     || dec_c_sw       || dec_c_swsp     ||
     dec_sb         || dec_sh         || dec_sw         || dec_c_addi16sp ||
@@ -595,12 +595,12 @@ assign      pc_plus_imm = program_counter + n_s2_imm_pc;
 
 // Operand A sourcing.
 wire opra_src_rs1  = n_s2_opr_src[DIS_OPRA_RS1 ];
-wire opra_src_pcim = n_s2_opr_src[DIS_OPRA_PCIM];
+wire opra_src_pc   = n_s2_opr_src[DIS_OPRA_PC  ];
 wire opra_src_csri = n_s2_opr_src[DIS_OPRA_CSRI];
 
 assign n_s2_opr_a = 
     {XLEN{opra_src_rs1    }} & s1_rs1_rdata   |
-    {XLEN{opra_src_pcim   }} & pc_plus_imm    |
+    {XLEN{opra_src_pc     }} & program_counter|
     {XLEN{opra_src_csri   }} & csr_imm        ;
 
 // Operand B sourcing.

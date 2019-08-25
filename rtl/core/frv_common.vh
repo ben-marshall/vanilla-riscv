@@ -77,7 +77,7 @@ localparam CSR_SWAP     = 0;
 // Dispatch stage operand register sources
 
 localparam DIS_OPRA_RS1 = 0;  // Operand A sources RS1
-localparam DIS_OPRA_PCIM= 1;  // Operand A sources PC+immediate
+localparam DIS_OPRA_PC  = 1;  // Operand A sources PC
 localparam DIS_OPRA_CSRI= 2;  // Operand A sources CSR mask immediate
 
 localparam DIS_OPRB_RS2 = 3;  // Operand B sources RS2
