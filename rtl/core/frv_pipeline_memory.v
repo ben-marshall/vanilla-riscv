@@ -79,9 +79,6 @@ parameter   MMIO_BASE_MASK        = 32'hFFFF_F000;
 // Stalling / Pipeline Progression
 // -------------------------------------------------------------------------
 
-// Input into pipeline register, which then drives s3_p_valid;
-wire   p_valid   = s3_valid && !s3_busy;
-
 // Is this stage currently busy?
 assign s3_busy = p_busy                   ||
                  lsu_valid  && !lsu_ready ;
@@ -90,6 +87,9 @@ assign s3_busy = p_busy                   ||
 wire   p_busy    ;
 
 wire pipe_progress = !s3_busy && s3_valid;
+
+// Input into pipeline register, which then drives s3_p_valid;
+wire   p_valid   = pipe_progress;
 
 //
 // Operation Decoding

@@ -129,16 +129,18 @@ assign hold_lsu_req = cf_req || lsu_busy || trap_int;
 // -------------------------------------------------------------------------
 
 reg  [XL:0] s4_pc;
-wire [XL:0] n_s4_pc = s4_pc + {29'b0, s4_size,1'b0};
+wire [XL:0] pc_plus_isize = s4_pc + {29'b0, s4_size,1'b0};
+
+wire [XL:0] n_s4_pc       = cf_req && !trap_int ? cf_target      :
+              cfu_tgt_reg || cfu_pred_correct   ? s4_opr_a       :
+                                                  pc_plus_isize  ;
 
 always @(posedge g_clk) begin
     if(!g_resetn) begin
         s4_pc <= FRV_PC_RESET_VALUE;
-    end else if(cfu_pred_correct) begin
-        s4_pc <= s4_opr_a;
-    end else if(cf_req && cf_ack) begin
+    end else if(trap_int && cf_req && cf_ack) begin
         s4_pc <= cf_target;
-    end else if(pipe_progress) begin
+    end else if(pipe_progress || (cf_req && cf_ack)) begin
         s4_pc <= n_s4_pc;
     end
 end
@@ -240,9 +242,9 @@ assign cf_req       = cf_req_noint || trap_int  ;
 wire cfu_finish_now = cf_req && cf_ack;
 
 wire [31:0] cf_target_noint = 
-    {XLEN{cfu_tgt_branch}}  & n_s4_pc   |
-    {XLEN{cfu_tgt_reg   }}  & s4_opr_a  |
-    {XLEN{cfu_mret      }}  & csr_mepc  ;
+    {XLEN{cfu_tgt_branch}}  & pc_plus_isize |
+    {XLEN{cfu_tgt_reg   }}  & s4_opr_a      |
+    {XLEN{cfu_mret      }}  & csr_mepc      ;
 
 // Given a control flow change, this is where we are going.
 assign cf_target    = 
@@ -267,7 +269,7 @@ end
 wire cfu_gpr_wen = cfu_link;
 
 // Always writes the "next" PC value, i.e. instruction following the jump.
-wire [XL:0] cfu_gpr_wdata = n_s4_pc;
+wire [XL:0] cfu_gpr_wdata = pc_plus_isize;
 
 
 //
@@ -560,8 +562,7 @@ assign rvfi_rd_wdata = |s4_rd && !trap_cpu ?
                        (use_saved_gpr_wdata ? saved_gpr_wdata : gpr_wdata) : 0;
 
 assign rvfi_pc_rdata = trs_pc   ; 
-assign rvfi_pc_wdata = cf_req_noint ? cf_target_noint            :
-                                      s4_pc+{29'b0,s4_size,1'b0} ;
+assign rvfi_pc_wdata = n_s4_pc  ;
 
 assign rvfi_mem_addr = {s4_opr_b[XL:2], 2'b00} ;
 assign rvfi_mem_rmask= fu_lsu && lsu_load  ? lsu_strb : 4'b0000 ;

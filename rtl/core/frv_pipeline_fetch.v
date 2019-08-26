@@ -36,6 +36,9 @@ output wire         s1_error
 // Value taken by the PC on a reset.
 parameter FRV_PC_RESET_VALUE = 32'h8000_0000;
 
+// Maximum number of prefetch requests to have in flight at once.
+parameter PREFETCH_REQS = 3;
+
 // Common core parameters and constants
 `include "frv_common.vh"
 
@@ -93,7 +96,8 @@ wire [XL:0] n_imem_addr = imem_addr + 4;
 
 // Don't start a memory fetch request if there are already a bunch of
 // outstanding, unrecieved responses.
-wire        n_imem_req  = (f_ready || cf_change) && reqs_outstanding<3;
+wire        n_imem_req  = (f_ready || cf_change) &&
+                          reqs_outstanding < PREFETCH_REQS;
 
 //
 // Update the fetch address in terms of control flow changes and natural
@@ -144,8 +148,8 @@ end
 // should only store the "upper" halfword of the response.
 reg  fetch_misaligned;
 wire n_fetch_misaligned =
-    ((cf_change && cf_target[1]) || fetch_misaligned) &&
-    !f_2byte;
+    ((cf_change && cf_target[1]) || (fetch_misaligned&&!cf_change &&
+    !f_2byte));
 
 always @(posedge g_clk) begin
     if(!g_resetn) begin

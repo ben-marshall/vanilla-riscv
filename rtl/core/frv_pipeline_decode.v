@@ -25,7 +25,7 @@ input  wire [XL:0] s1_rs2_rdata  ,
 
 output wire        s1_cf_req     , // Predicted control flow change
 output wire [XL:0] s1_cf_target  , // Predicted control flow change target
-output wire        s1_cf_ack     , // Predicted control flow change ack
+input  wire        s1_cf_ack     , // Predicted control flow change ack
 
 input  wire        cf_req        , // Control flow change request
 input  wire [XL:0] cf_target     , // Control flow change target
@@ -68,7 +68,7 @@ wire   p_s2_busy;
 wire pipe_progress = s1_valid && !s1_busy;
 
 assign s1_busy      = p_s2_busy || s1_bubble || pcf_stall;
-wire   n_s2_valid   = s1_valid  || s1_bubble;
+wire   n_s2_valid   = (s1_valid || s1_bubble ) && !pcf_stall;
 
 wire [ 4:0] n_s2_rd         ; // Destination register address
 wire [XL:0] n_s2_opr_a      ; // Operand A
@@ -573,7 +573,7 @@ reg  [XL:0] program_counter;
 
 wire [XL:0] n_pc_offset       = {29'b0, n_s2_size,1'b0}   ;
 
-wire [XL:0] n_program_counter = program_counter + n_pc_offset;;
+wire [XL:0] n_program_counter = program_counter + n_pc_offset;
 
 always @(posedge g_clk) begin
     if(!g_resetn) begin
