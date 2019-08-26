@@ -82,3 +82,18 @@ The branch predictor:
 
 - They need to source their target addresses from `s4_opr_ra` but currently
   do not.
+
+~~Todo: Fix RVFI tracing~~
+
+- Because we have effectively inverted when a conditional branch is
+  *taken*, the `pcwdata` field for RVFI will report the branch target
+  when it should report the next instruction, and vice versa.
+
+Todo: Flexibility in the predictor
+
+- Be able to predict taken or not taken, and resolve this in the
+  writeback stage.
+
+Todo: Fix simulation data memory response
+
+- Data memory responses always take two cycles due to sim sync issues!

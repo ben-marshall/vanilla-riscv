@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
-[*] Tue Jul 30 12:28:48 2019
+[*] Mon Aug 26 11:12:03 2019
 [*]
-[dumpfile] "/home/ben/projects/riscv-faster/work/riscv-formal/insn_lw_ch0/engine_0/trace.vcd"
-[dumpfile_mtime] "Tue Jul 30 12:26:57 2019"
-[dumpfile_size] 505916
-[savefile] "/home/ben/projects/riscv-faster/flow/gtkwave/riscv-formal.gtkw"
-[timestart] 0
+[dumpfile] "/home/ben/projects/riscv/cores/vanilla-riscv/work/riscv-formal/insn_beq_ch0/engine_0/trace.vcd"
+[dumpfile_mtime] "Mon Aug 26 11:08:17 2019"
+[dumpfile_size] 592214
+[savefile] "/home/ben/projects/riscv/cores/vanilla-riscv/flow/gtkwave/riscv-formal.gtkw"
+[timestart] 67
 [size] 1920 1025
 [pos] -1 -1
-*-5.331912 150 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-4.697749 137 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] rvfi_testbench.
 [treeopen] rvfi_testbench.checker_inst.
 [treeopen] rvfi_testbench.wrapper.
@@ -18,84 +18,82 @@
 [sst_width] 346
 [signals_width] 367
 [sst_expanded] 1
-[sst_vpaned_height] 279
+[sst_vpaned_height] 288
 @28
 rvfi_testbench.reset
 rvfi_testbench.rvfi_halt
 @22
 rvfi_testbench.rvfi_insn[31:0]
-@28
-rvfi_testbench.rvfi_ixl[1:0]
-@22
-rvfi_testbench.rvfi_mem_addr[31:0]
-rvfi_testbench.rvfi_mem_rdata[31:0]
-rvfi_testbench.rvfi_mem_rmask[3:0]
-rvfi_testbench.rvfi_mem_wdata[31:0]
-rvfi_testbench.rvfi_mem_wmask[3:0]
-@28
-rvfi_testbench.rvfi_mode[1:0]
-@22
-rvfi_testbench.rvfi_order[63:0]
+rvfi_testbench.checker_inst.spec_pc_wdata[31:0]
+rvfi_testbench.checker_inst.spec_rd_addr[4:0]
+rvfi_testbench.checker_inst.spec_rd_wdata[31:0]
 @24
-rvfi_testbench.rvfi_rs1_addr[4:0]
-@22
-rvfi_testbench.rvfi_rs1_rdata[31:0]
-@24
-rvfi_testbench.rvfi_rs2_addr[4:0]
-@22
-rvfi_testbench.rvfi_rs2_rdata[31:0]
-@24
-rvfi_testbench.rvfi_rd_addr[4:0]
-@22
-rvfi_testbench.rvfi_rd_wdata[31:0]
+rvfi_testbench.checker_inst.spec_rs1_addr[4:0]
+rvfi_testbench.checker_inst.rs1_addr[4:0]
+rvfi_testbench.checker_inst.spec_rs2_addr[4:0]
+rvfi_testbench.checker_inst.rs2_addr[4:0]
 @28
-rvfi_testbench.rvfi_trap
-rvfi_testbench.rvfi_valid
-rvfi_testbench.rvfi_intr
+rvfi_testbench.checker_inst.spec_trap
+rvfi_testbench.checker_inst.spec_valid
+@200
+-
+@24
+rvfi_testbench.wrapper.i_dut.i_pipeline.rvfi_s2_rs1_addr[4:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.rvfi_s3_rs1_addr[4:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.rvfi_s4_rs1_addr[4:0]
+@28
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s3_memory.pipe_progress
 @22
-rvfi_testbench.rvfi_pc_rdata[31:0]
-rvfi_testbench.rvfi_pc_wdata[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.s2_instr[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.s3_instr[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.s4_instr[31:0]
+@200
+-
+@22
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.d_data[31:0]
+@24
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.s1_rs1_addr[4:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.s1_rs2_addr[4:0]
+@28
+rvfi_testbench.wrapper.i_dut.i_pipeline.s1_cf_ack
+rvfi_testbench.wrapper.i_dut.i_pipeline.s1_cf_req
+@22
+rvfi_testbench.wrapper.i_dut.i_pipeline.s1_cf_target[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.program_counter[31:0]
+@28
+rvfi_testbench.wrapper.i_dut.i_pipeline.s4_cf_ack
+rvfi_testbench.wrapper.i_dut.i_pipeline.s4_cf_req
+@22
+rvfi_testbench.wrapper.i_dut.i_pipeline.s4_cf_target[31:0]
+@200
+-
+@22
+rvfi_testbench.checker_inst.pc_rdata[31:0]
+rvfi_testbench.checker_inst.pc_wdata[31:0]
+rvfi_testbench.checker_inst.spec_pc_wdata[31:0]
 @200
 -
 @28
-rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cfu_trap
-rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.lsu_trap
-rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.s4_trap
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cfu_tgt_branch
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cfu_tgt_reg
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cfu_pred_correct
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cfu_tgt_trap
 rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.trap_cpu
 rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.trap_int
 @200
 -
 @28
-rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cf_ack
-rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cf_req
+rvfi_testbench.wrapper.i_dut.i_pipeline.s4_cf_ack
+rvfi_testbench.wrapper.i_dut.i_pipeline.s4_cf_req
 @22
-rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cf_target[31:0]
-@200
--
-@22
-rvfi_testbench.checker_inst.pc_rdata[31:0]
-rvfi_testbench.checker_inst.insn_spec.spec_pc_wdata[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.s4_cf_target[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.s4_pc[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.n_s4_pc[31:0]
 @24
-rvfi_testbench.checker_inst.insn_spec.spec_rd_addr[4:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.s4_size[1:0]
 @22
-rvfi_testbench.checker_inst.insn_spec.spec_rd_wdata[31:0]
-@28
-rvfi_testbench.checker_inst.insn_spec.spec_valid
-@24
-rvfi_testbench.checker_inst.insn_spec.spec_rs2_addr[4:0]
-rvfi_testbench.checker_inst.insn_spec.spec_rs1_addr[4:0]
-@200
--
-@22
-rvfi_testbench.wrapper.i_dut.i_pipeline.mmio_addr[31:0]
-@28
-rvfi_testbench.wrapper.i_dut.i_pipeline.mmio_en
-rvfi_testbench.wrapper.i_dut.i_pipeline.mmio_error
-@22
-rvfi_testbench.wrapper.i_dut.i_pipeline.mmio_rdata[31:0]
-rvfi_testbench.wrapper.i_dut.i_pipeline.mmio_wdata[31:0]
-@28
-rvfi_testbench.wrapper.i_dut.i_pipeline.mmio_wen
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.s4_opr_a[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s4_writeback.cf_target_noint[31:0]
 @c00200
 -DMEM
 @28
@@ -117,5 +115,97 @@ rvfi_testbench.wrapper.i_dut.i_pipeline.dmem_error
 rvfi_testbench.wrapper.i_dut.i_pipeline.dmem_rdata[31:0]
 @1401200
 -DMEM
+@c00200
+-Decode
+@22
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.program_counter[31:0]
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.pc_plus_imm[31:0]
+@28
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_beq
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_lw
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_swsp
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_srai
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_auipc
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_add
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_addi
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_and
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_andi
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_bge
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_bgeu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_blt
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_bltu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_bne
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_add
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_addi
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_addi4spn
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_addi16sp
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_and
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_andi
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_beqz
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_bnez
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_ebreak
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_j
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_jal
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_jalr
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_jr
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_li
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_lui
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_lwsp
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_mv
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_nop
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_or
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_slli
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_srai
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_srli
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_sub
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_sw
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_c_xor
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_csrrc
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_csrrci
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_csrrs
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_csrrsi
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_csrrw
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_csrrwi
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_div
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_divu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_ebreak
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_ecall
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_fence
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_fence_i
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_jal
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_jalr
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_lb
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_lbu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_lh
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_lhu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_lui
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_lw
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_mret
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_mul
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_mulh
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_mulhsu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_mulhu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_or
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_ori
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_rem
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_remu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sb
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sh
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sll
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_slli
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_slt
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_slti
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sltiu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sltu
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sra
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_srl
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_srli
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sub
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_sw
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_wfi
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_xor
+rvfi_testbench.wrapper.i_dut.i_pipeline.i_pipeline_s1_decode.dec_xori
+@1401200
+-Decode
 [pattern_trace] 1
 [pattern_trace] 0
