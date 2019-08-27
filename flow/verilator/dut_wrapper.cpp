@@ -80,12 +80,8 @@ void dut_wrapper::dut_clear_reset() {
 //! Simulate the DUT for a single clock cycle
 void dut_wrapper::dut_step_clk() {
 
-    vluint8_t prev_clk;
-
     for(uint32_t i = 0; i < this -> evals_per_clock; i++) {
 
-        prev_clk = this -> dut -> g_clk;
-        
         if(i == this -> evals_per_clock / 2) {
             
             this -> dut -> g_clk = !this -> dut -> g_clk;
