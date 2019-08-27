@@ -1,15 +1,15 @@
 [*]
 [*] GTKWave Analyzer v3.3.86 (w)1999-2017 BSI
-[*] Sun Aug 25 12:36:22 2019
+[*] Tue Aug 27 09:00:13 2019
 [*]
 [dumpfile] "/home/ben/projects/riscv/cores/vanilla-riscv/work/riscv-compliance/rv32i/I-BEQ-01.vcd"
-[dumpfile_mtime] "Sun Aug 25 12:35:01 2019"
-[dumpfile_size] 1740365
+[dumpfile_mtime] "Tue Aug 27 08:58:55 2019"
+[dumpfile_size] 1581475
 [savefile] "/home/ben/projects/riscv/cores/vanilla-riscv/flow/gtkwave/verilator.gtkw"
 [timestart] 1
 [size] 1920 1025
 [pos] -1 -1
-*-12.634586 15226 2626 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-8.413937 47 2626 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] TOP.
 [treeopen] TOP.frv_core.
 [treeopen] TOP.frv_core.i_pipeline.
@@ -20,7 +20,7 @@
 [sst_width] 270
 [signals_width] 350
 [sst_expanded] 1
-[sst_vpaned_height] 338
+[sst_vpaned_height] 326
 @28
 TOP.frv_core.g_clk
 TOP.frv_core.g_resetn
@@ -94,7 +94,9 @@ TOP.frv_core.i_pipeline.dmem_error
 -Data Memory
 @800200
 -Trace
-@2023
+@28
+TOP.frv_core.trs_valid
+@2022
 ^1 /home/ben/projects/riscv/cores/vanilla-riscv/work/riscv-compliance/rv32i/I-BEQ-01.elf.gtkwl
 TOP.frv_core.trs_instr[31:0]
 @22
@@ -105,7 +107,6 @@ TOP.frv_core.trs_pc[31:0]
 @20000
 -
 @28
-TOP.frv_core.trs_valid
 TOP.frv_core.i_pipeline.cf_req
 TOP.frv_core.i_pipeline.cf_ack
 @22
@@ -215,7 +216,7 @@ TOP.frv_core.i_pipeline.i_pipeline_s0_fetch.s1_error
 TOP.frv_core.i_pipeline.i_pipeline_s0_fetch.s1_valid
 @1401200
 -Pipe - S0 - Fetch
-@800200
+@c00200
 -Pipe - S1 Decode
 @22
 TOP.frv_core.i_pipeline.s1_data[31:0]
@@ -255,9 +256,9 @@ TOP.frv_core.i_pipeline.i_pipeline_s1_decode.s1_cf_ack
 TOP.frv_core.i_pipeline.i_pipeline_s1_decode.s1_cf_req
 @22
 TOP.frv_core.i_pipeline.i_pipeline_s1_decode.s1_cf_target[31:0]
-@1000200
+@1401200
 -Pipe - S1 Decode
-@800200
+@c00200
 -Pipe - S2 Execute
 @28
 TOP.frv_core.i_pipeline.s2_busy
@@ -280,6 +281,12 @@ TOP.frv_core.i_pipeline.s2_size[1:0]
 TOP.frv_core.i_pipeline.s2_trap
 @22
 TOP.frv_core.i_pipeline.s2_uop[4:0]
+@28
+TOP.frv_core.i_pipeline.i_pipeline_s2_execute.s2_cf_pred
+TOP.frv_core.i_pipeline.i_pipeline_s2_execute.cfu_always_take
+TOP.frv_core.i_pipeline.i_pipeline_s2_execute.cfu_cond
+TOP.frv_core.i_pipeline.i_pipeline_s2_execute.cfu_cond_taken
+TOP.frv_core.i_pipeline.i_pipeline_s2_execute.cfu_prediction_correct
 @c00200
 -ALI
 @22
@@ -307,7 +314,6 @@ TOP.frv_core.i_pipeline.i_pipeline_s2_execute.alu_ready
 TOP.frv_core.i_pipeline.i_pipeline_s2_execute.alu_valid
 @1401200
 -ALI
-@1000200
 -Pipe - S2 Execute
 @c00200
 -Pipe - S3 Memory
@@ -411,6 +417,16 @@ TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cf_ack
 TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cf_req
 @22
 TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cf_target[31:0]
+@28
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cfu_pred_correct
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cfu_pred_wrong
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cfu_tgt_direct
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cfu_tgt_reg
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.cfu_tgt_trap
+@22
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.n_s4_pc[31:0]
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.s4_pc[31:0]
+TOP.frv_core.i_pipeline.i_pipeline_s4_writeback.s4_opr_a[31:0]
 @200
 -
 @28

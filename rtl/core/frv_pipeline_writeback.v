@@ -132,7 +132,7 @@ reg  [XL:0] s4_pc;
 wire [XL:0] pc_plus_isize = s4_pc + {29'b0, s4_size,1'b0};
 
 wire [XL:0] n_s4_pc       = cf_req && !trap_int ? cf_target      :
-              cfu_tgt_reg || cfu_pred_correct   ? s4_opr_a       :
+                                cfu_tgt_ld_opra ? s4_opr_a       :
                                                   pc_plus_isize  ;
 
 always @(posedge g_clk) begin
@@ -202,23 +202,31 @@ wire [XL:0] csr_gpr_wdata   = csr_rdata;
 // -------------------------------------------------------------------------
 
 // Correctly predicted control flow changes
-wire cfu_pred_correct= fu_cfu && (s4_uop == CFU_TAKEN       ||
-                                  s4_uop == CFU_JALI        );
+wire cfu_pt_c   = fu_cfu && s4_uop == CFU_PT_C ; // Correctly predict taken
+wire cfu_pt_w   = fu_cfu && s4_uop == CFU_PT_W ; // Incorrectly predict taken
+wire cfu_pnt_c  = fu_cfu && s4_uop == CFU_PNT_C; // Correctly predict not taken
+wire cfu_pnt_w  = fu_cfu && s4_uop == CFU_PNT_W; // Incorrectly predict not taken
+
+wire cfu_pred_wrong     = cfu_pt_w || cfu_pnt_w;
+wire cfu_pred_correct   = cfu_pt_c || cfu_pnt_c;
 
 // A "normal" control flow change due to an (in)direct jump or conditional
 // branch instruction.
-wire cfu_tgt_branch = fu_cfu &&  s4_uop == CFU_NOT_TAKEN    ;
-wire cfu_tgt_reg    = fu_cfu &&  s4_uop == CFU_JALR         ;
-wire cfu_cf_taken   = cfu_tgt_branch || cfu_tgt_reg;
+wire cfu_tgt_reg    = fu_cfu &&  s4_uop == CFU_JALR ;
+wire cfu_tgt_direct = fu_cfu &&  s4_uop == CFU_JALI ;
+wire cfu_cf_taken   = cfu_pred_wrong || cfu_tgt_reg ;
+
+wire cfu_tgt_ld_opra= cfu_tgt_reg || cfu_tgt_direct || cfu_pt_c || cfu_pnt_w;
+wire cfu_tgt_ld_npc = cfu_tgt_reg || cfu_tgt_direct || cfu_pt_w || cfu_pnt_c;
 
 // "Special" control flow change instructions which jump to the current MTVEC
 wire cfu_ebreak     = fu_cfu && s4_uop == CFU_EBREAK;
-wire cfu_ecall      = fu_cfu && s4_uop == CFU_ECALL;
+wire cfu_ecall      = fu_cfu && s4_uop == CFU_ECALL ;
 
 // A trap caused by the CFU
 wire cfu_trap       = cfu_ebreak || cfu_ecall;
 
-wire cfu_mret       = fu_cfu &&  s4_uop == CFU_MRET;
+wire cfu_mret       = fu_cfu &&  s4_uop == CFU_MRET ;
 
 // Pulsed signal indicating to the CSRs we just returned from an M mode
 // trap handler.
@@ -242,7 +250,7 @@ assign cf_req       = cf_req_noint || trap_int  ;
 wire cfu_finish_now = cf_req && cf_ack;
 
 wire [31:0] cf_target_noint = 
-    {XLEN{cfu_tgt_branch}}  & pc_plus_isize |
+    {XLEN{cfu_pred_wrong}}  & s4_opr_a      |
     {XLEN{cfu_tgt_reg   }}  & s4_opr_a      |
     {XLEN{cfu_mret      }}  & csr_mepc      ;
 

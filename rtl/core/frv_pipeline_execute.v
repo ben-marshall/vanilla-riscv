@@ -13,6 +13,7 @@ input  wire [ 4:0] s2_rd           , // Destination register address
 input  wire [XL:0] s2_opr_a        , // Operand A
 input  wire [XL:0] s2_opr_b        , // Operand B
 input  wire [XL:0] s2_opr_c        , // Operand C
+input  wire        s2_cf_pred      , // Control flow prediction
 input  wire [ 4:0] s2_uop          , // Micro-op code
 input  wire [ 4:0] s2_fu           , // Functional Unit
 input  wire        s2_trap         , // Raise a trap?
@@ -175,10 +176,20 @@ wire        cfu_cond_taken =
 
 wire        cfu_always_take= cfu_jalr || cfu_jali || cfu_jalr;
 
+wire        cfu_predict_taken = s2_cf_pred == CF_PREDICT_TAKEN;
+
+wire        cfu_prediction_correct = 
+    cfu_cond        && cfu_cond_taken == cfu_predict_taken ||
+    cfu_always_take && cfu_predict_taken                   ;
+
+wire [4:0]  cfu_pred_uop   =
+    {5{ cfu_predict_taken &&  cfu_prediction_correct}} & CFU_PT_C   |
+    {5{ cfu_predict_taken && !cfu_prediction_correct}} & CFU_PT_W   |
+    {5{!cfu_predict_taken &&  cfu_prediction_correct}} & CFU_PNT_C  |
+    {5{!cfu_predict_taken && !cfu_prediction_correct}} & CFU_PNT_W  ;
+
 wire [4:0]  n_s3_uop_cfu   =
-    cfu_cond        ? (cfu_cond_taken ? CFU_TAKEN : CFU_NOT_TAKEN)  :
-    cfu_always_take ? s2_uop                                        :
-                      s2_uop                                        ;
+    cfu_cond        ? cfu_pred_uop  : s2_uop ;
 
 wire [XL:0] n_s3_opr_a_cfu = 
     cfu_jalr    ? {alu_add_result[XL:1],1'b0} :

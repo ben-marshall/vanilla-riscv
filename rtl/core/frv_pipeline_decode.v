@@ -44,6 +44,7 @@ output wire [ 4:0] s2_rd         , // Destination register address
 output wire [XL:0] s2_opr_a      , // Operand A
 output wire [XL:0] s2_opr_b      , // Operand B
 output wire [XL:0] s2_opr_c      , // Operand C
+output wire        s2_cf_pred    , // Control flow prediction
 output wire [ 4:0] s2_uop        , // Micro-op code
 output wire [ 4:0] s2_fu         , // Functional Unit (alu/mem/jump/mul/csr)
 output wire        s2_trap       , // Raise a trap?
@@ -553,12 +554,16 @@ wire [31:0] csr_imm  = {27'b0, s1_rs1_addr    };
 // Static branch prediction
 // -------------------------------------------------------------------------
 
-wire   pcf_change_instr = 
-    dec_beq        || dec_c_beqz     || dec_bge        || dec_bgeu       ||
-    dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ||
-    dec_c_j        || dec_c_jal      || dec_jal         ;
+//dec_beq        || dec_c_beqz     || dec_bge        || dec_bgeu       ||
+//dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ||
 
-assign s1_cf_req    = pcf_change_instr && !s1_bubble && !p_s2_busy;
+wire   pcf_predict_taken =
+        dec_c_j     || dec_c_jal      || dec_jal         ;
+
+wire   n_s2_cf_pred = pcf_predict_taken ? CF_PREDICT_TAKEN          :
+                                          CF_PREDICT_NOT_TAKEN      ;
+
+assign s1_cf_req    = pcf_predict_taken && !s1_bubble && !p_s2_busy;
 
 assign s1_cf_target = pc_plus_imm;
 
@@ -625,7 +630,7 @@ assign n_s2_opr_c =
 // Pipeline Register.
 // -------------------------------------------------------------------------
 
-localparam RL = 146;
+localparam RL = 147;
 
 `ifdef RVFI
 always @(posedge g_clk) begin
@@ -650,6 +655,7 @@ wire [RL-1:0] p_in = {
  n_s2_opr_a                , // Operand A
  n_s2_opr_b                , // Operand B
  n_s2_opr_c                , // Operand C
+ n_s2_cf_pred              , // Control flow prediction.
  s1_bubble ?  5'b0 : n_s2_uop  , // Micro-op code
  s1_bubble ?  5'b0 : n_s2_fu   , // Functional Unit (alu/mem/jump/mul/csr)
  s1_bubble ?  1'b0 : n_s2_trap , // Raise a trap?
@@ -664,6 +670,7 @@ assign {
  s2_opr_a      , // Operand A
  s2_opr_b      , // Operand B
  s2_opr_c      , // Operand C
+ s2_cf_pred    , // Control flow prediction.
  s2_uop        , // Micro-op code
  s2_fu         , // Functional Unit (alu/mem/jump/mul/csr)
  s2_trap       , // Raise a trap?

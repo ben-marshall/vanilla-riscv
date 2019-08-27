@@ -89,7 +89,7 @@ The branch predictor:
   *taken*, the `pcwdata` field for RVFI will report the branch target
   when it should report the next instruction, and vice versa.
 
-Todo: Flexibility in the predictor
+~~Todo: Flexibility in the predictor~~
 
 - Be able to predict taken or not taken, and resolve this in the
   writeback stage.

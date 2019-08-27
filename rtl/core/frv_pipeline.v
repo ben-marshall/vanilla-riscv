@@ -185,6 +185,7 @@ wire [ 4:0] s2_rd         ; // Destination register address
 wire [XL:0] s2_opr_a      ; // Operand A
 wire [XL:0] s2_opr_b      ; // Operand B
 wire [XL:0] s2_opr_c      ; // Operand C
+wire        s2_cf_pred    ; // Control flow prediction.
 wire [ 4:0] s2_uop        ; // Micro-op code
 wire [ 4:0] s2_fu         ; // Functional Unit (alu/mem/jump/mul/csr)
 wire        s2_trap       ; // Raise a trap?
@@ -363,6 +364,7 @@ frv_pipeline_decode #(
 .s2_opr_a           (s2_opr_a           ), // Operand A
 .s2_opr_b           (s2_opr_b           ), // Operand B
 .s2_opr_c           (s2_opr_c           ), // Operand C
+.s2_cf_pred         (s2_cf_pred         ), // Control flow prediction.
 .s2_uop             (s2_uop             ), // Micro-op code
 .s2_fu              (s2_fu              ), // Functional Unit
 .s2_trap            (s2_trap            ), // Raise a trap?
@@ -382,6 +384,7 @@ frv_pipeline_execute i_pipeline_s2_execute (
 .s2_opr_a         (s2_opr_a         ), // Operand A
 .s2_opr_b         (s2_opr_b         ), // Operand B
 .s2_opr_c         (s2_opr_c         ), // Operand C
+.s2_cf_pred       (s2_cf_pred       ), // Control flow prediction.
 .s2_uop           (s2_uop           ), // Micro-op code
 .s2_fu            (s2_fu            ), // Functional Unit
 .s2_trap          (s2_trap          ), // Raise a trap?
