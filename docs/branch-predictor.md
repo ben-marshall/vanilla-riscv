@@ -94,6 +94,6 @@ The branch predictor:
 - Be able to predict taken or not taken, and resolve this in the
   writeback stage.
 
-Todo: Fix simulation data memory response
+~~Todo: Fix simulation data memory response~~
 
 - Data memory responses always take two cycles due to sim sync issues!

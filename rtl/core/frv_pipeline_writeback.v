@@ -217,7 +217,7 @@ wire cfu_tgt_direct = fu_cfu &&  s4_uop == CFU_JALI ;
 wire cfu_cf_taken   = cfu_pred_wrong || cfu_tgt_reg ;
 
 wire cfu_tgt_ld_opra= cfu_tgt_reg || cfu_tgt_direct || cfu_pt_c || cfu_pnt_w;
-wire cfu_tgt_ld_npc = cfu_tgt_reg || cfu_tgt_direct || cfu_pt_w || cfu_pnt_c;
+wire cfu_tgt_ld_npc =                                  cfu_pt_w || cfu_pnt_c;
 
 // "Special" control flow change instructions which jump to the current MTVEC
 wire cfu_ebreak     = fu_cfu && s4_uop == CFU_EBREAK;
@@ -250,9 +250,10 @@ assign cf_req       = cf_req_noint || trap_int  ;
 wire cfu_finish_now = cf_req && cf_ack;
 
 wire [31:0] cf_target_noint = 
-    {XLEN{cfu_pred_wrong}}  & s4_opr_a      |
-    {XLEN{cfu_tgt_reg   }}  & s4_opr_a      |
-    {XLEN{cfu_mret      }}  & csr_mepc      ;
+    {XLEN{cfu_tgt_ld_opra}}  & s4_opr_a      |
+    {XLEN{cfu_tgt_ld_npc }}  & pc_plus_isize |
+    {XLEN{cfu_tgt_reg    }}  & s4_opr_a      |
+    {XLEN{cfu_mret       }}  & csr_mepc      ;
 
 // Given a control flow change, this is where we are going.
 assign cf_target    = 

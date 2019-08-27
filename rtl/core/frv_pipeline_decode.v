@@ -554,11 +554,18 @@ wire [31:0] csr_imm  = {27'b0, s1_rs1_addr    };
 // Static branch prediction
 // -------------------------------------------------------------------------
 
-//dec_beq        || dec_c_beqz     || dec_bge        || dec_bgeu       ||
-//dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ||
+wire    pcf_conditional = 
+    dec_beq        || dec_c_beqz     || dec_bge        || dec_bgeu       ||
+    dec_blt        || dec_bltu       || dec_bne        || dec_c_bnez     ; 
+
+// Predict taken for conditional branches if we are branching
+// backwards (as in, for a loop).
+wire    pcf_conditional_predict_taken =
+    pcf_conditional && n_s2_imm_pc[31];
 
 wire   pcf_predict_taken =
-        dec_c_j     || dec_c_jal      || dec_jal         ;
+        dec_c_j     || dec_c_jal      || dec_jal       ||
+        pcf_conditional_predict_taken ;
 
 wire   n_s2_cf_pred = pcf_predict_taken ? CF_PREDICT_TAKEN          :
                                           CF_PREDICT_NOT_TAKEN      ;

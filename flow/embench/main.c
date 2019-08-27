@@ -25,8 +25,8 @@ int main() {
     uint64_t count_instrs = i_end - i_start;
     uint64_t count_cycles = c_end - c_start;
 
-    __putstr("Cycles: 0x"); __puthex64(count_cycles); __putchar('\n');
-    __putstr("Instrs: 0x"); __puthex64(count_instrs); __putchar('\n');
+    __putstr("Cycles: 0x"); __puthex64_nlz(count_cycles); __putchar('\n');
+    __putstr("Instrs: 0x"); __puthex64_nlz(count_instrs); __putchar('\n');
     
     __putstr("Verify Bechmark...\n");
 

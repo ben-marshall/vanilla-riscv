@@ -43,6 +43,23 @@ void __puthex64(uint64_t w) {
     }
 }
 
+//! Print a 64-bit number as hex. No leading zeros.
+void __puthex64_nlz(uint64_t w) {
+    char nz_seen = 0;
+    for(int i =  7; i >= 0; i --) {
+        uint8_t b_0 = (w >> (8*i    )) & 0xF;
+        uint8_t b_1 = (w >> (8*i + 4)) & 0xF;
+        if(b_1 > 0 || nz_seen) {
+            nz_seen = 1;
+            __putchar(lut[b_1]);
+        }
+        if(b_0 > 0 || nz_seen) {
+            nz_seen = 1;
+            __putchar(lut[b_0]);
+        }
+    }
+}
+
 //! Print a 32-bit number as hex
 void __puthex32(uint32_t w) {
     for(int i =  3; i >= 0; i --) {
