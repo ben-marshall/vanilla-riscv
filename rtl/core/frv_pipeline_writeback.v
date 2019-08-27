@@ -210,11 +210,14 @@ wire cfu_pnt_w  = fu_cfu && s4_uop == CFU_PNT_W; // Incorrectly predict not take
 wire cfu_pred_wrong     = cfu_pt_w || cfu_pnt_w;
 wire cfu_pred_correct   = cfu_pt_c || cfu_pnt_c;
 
+// CFU just needs to write link register. Don't perform a CF change.
+wire cfu_uop_link   = fu_cfu && s4_uop == CFU_LINK;
+
 // A "normal" control flow change due to an (in)direct jump or conditional
 // branch instruction.
-wire cfu_tgt_reg    = fu_cfu &&  s4_uop == CFU_JALR ;
+wire cfu_tgt_reg    = fu_cfu && (s4_uop == CFU_JALR || s4_uop == CFU_LINK);
 wire cfu_tgt_direct = fu_cfu &&  s4_uop == CFU_JALI ;
-wire cfu_cf_taken   = cfu_pred_wrong || cfu_tgt_reg ;
+wire cfu_cf_taken   = cfu_pred_wrong || (cfu_tgt_reg && !cfu_uop_link);
 
 wire cfu_tgt_ld_opra= cfu_tgt_reg || cfu_tgt_direct || cfu_pt_c || cfu_pnt_w;
 wire cfu_tgt_ld_npc =                                  cfu_pt_w || cfu_pnt_c;
@@ -236,7 +239,9 @@ assign exec_mret    = cfu_mret && pipe_progress;
 wire cfu_tgt_trap   = cfu_trap || s4_trap || lsu_trap || trap_int;
 
 // We need to write the next natural PC to a register.
-wire cfu_link       = fu_cfu && (s4_uop == CFU_JALI || s4_uop == CFU_JALR);
+wire cfu_link       = fu_cfu && (s4_uop == CFU_JALI     ||
+                                 s4_uop == CFU_JALR     ||
+                                 s4_uop == CFU_LINK     );
 
 // Control flow change occuring due to anything except an interrupt.
 // Separate out interrupts for easier RVFI tracking of events.

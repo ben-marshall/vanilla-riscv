@@ -562,17 +562,19 @@ wire    pcf_conditional =
 // backwards (as in, for a loop).
 wire    pcf_conditional_predict_taken =
     pcf_conditional && n_s2_imm_pc[31];
+        
+wire   pcf_always_taken  =
+        dec_c_j     || dec_c_jal      || dec_jal       || dec_c_jr  ;
 
 wire   pcf_predict_taken =
-        dec_c_j     || dec_c_jal      || dec_jal       ||
-        pcf_conditional_predict_taken ;
+        pcf_conditional_predict_taken || pcf_always_taken;
 
 wire   n_s2_cf_pred = pcf_predict_taken ? CF_PREDICT_TAKEN          :
                                           CF_PREDICT_NOT_TAKEN      ;
 
 assign s1_cf_req    = pcf_predict_taken && !s1_bubble && !p_s2_busy;
 
-assign s1_cf_target = pc_plus_imm;
+assign s1_cf_target = dec_c_jr ? {s1_rs1_rdata[XL:1],1'b0} : pc_plus_imm;
 
 wire   pcf_stall    = s1_cf_req && !s1_cf_ack;
 

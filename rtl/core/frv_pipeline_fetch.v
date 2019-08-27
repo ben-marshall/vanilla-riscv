@@ -37,7 +37,7 @@ output wire         s1_error
 parameter FRV_PC_RESET_VALUE = 32'h8000_0000;
 
 // Maximum number of prefetch requests to have in flight at once.
-parameter PREFETCH_REQS = 3;
+parameter PREFETCH_REQS = 2;
 
 // Common core parameters and constants
 `include "frv_common.vh"
@@ -94,10 +94,12 @@ wire progress_imem_addr = imem_req && imem_gnt;
 
 wire [XL:0] n_imem_addr = imem_addr + 4;
 
+wire reqs_out_ok = n_reqs_outstanding < PREFETCH_REQS;
+
 // Don't start a memory fetch request if there are already a bunch of
 // outstanding, unrecieved responses.
-wire        n_imem_req  = (f_ready || cf_change) &&
-                          reqs_outstanding < PREFETCH_REQS;
+wire        n_imem_req  = (s0_flush || f_ready || cf_change) &&
+                          (reqs_out_ok || s0_flush);
 
 //
 // Update the fetch address in terms of control flow changes and natural
@@ -171,7 +173,7 @@ assign f_4byte = rsp_recv && !fetch_misaligned && !drop_response;
 // Store the upper halfword of the response data.
 assign f_2byte = rsp_recv &&  fetch_misaligned && !drop_response;
 
-assign imem_ack= f_ready;
+assign imem_ack= f_ready || s0_flush;
 
 //
 // Constant assignments for un-used signals.

@@ -154,7 +154,6 @@ wire        cfu_ready   = cfu_valid     ; // Instruction complete.
 
 wire        cfu_cond    = cfu_valid && s2_uop[4:3] == 2'b00;
 wire        cfu_uncond  = cfu_valid && s2_uop[4:3] == 2'b10;
-wire        cfu_jmp     = cfu_valid && s2_uop      == CFU_JMP ;
 wire        cfu_jali    = cfu_valid && s2_uop      == CFU_JALI;
 wire        cfu_jalr    = cfu_valid && s2_uop      == CFU_JALR;
 
@@ -174,7 +173,7 @@ wire        cfu_cond_taken =
     cond_bltu &&  alu_lt    ||
     cond_bne  && !alu_eq    ;
 
-wire        cfu_always_take= cfu_jalr || cfu_jali || cfu_jalr;
+wire        cfu_always_take   = cfu_jalr || cfu_jali;
 
 wire        cfu_predict_taken = s2_cf_pred == CF_PREDICT_TAKEN;
 
@@ -188,8 +187,11 @@ wire [4:0]  cfu_pred_uop   =
     {5{!cfu_predict_taken &&  cfu_prediction_correct}} & CFU_PNT_C  |
     {5{!cfu_predict_taken && !cfu_prediction_correct}} & CFU_PNT_W  ;
 
+wire [4:0] cfu_always_uop =
+    cfu_predict_taken ? CFU_LINK : s2_uop;
+
 wire [4:0]  n_s3_uop_cfu   =
-    cfu_cond        ? cfu_pred_uop  : s2_uop ;
+    cfu_cond        ? cfu_pred_uop  : cfu_always_uop;
 
 wire [XL:0] n_s3_opr_a_cfu = 
     cfu_jalr    ? {alu_add_result[XL:1],1'b0} :

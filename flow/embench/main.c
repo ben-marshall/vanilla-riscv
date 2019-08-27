@@ -1,4 +1,6 @@
 
+#include <stdio.h>
+
 #include "embench.h"
 
 //! Main entry point, called from boot.S
@@ -25,8 +27,12 @@ int main() {
     uint64_t count_instrs = i_end - i_start;
     uint64_t count_cycles = c_end - c_start;
 
-    __putstr("Cycles: 0x"); __puthex64_nlz(count_cycles); __putchar('\n');
-    __putstr("Instrs: 0x"); __puthex64_nlz(count_instrs); __putchar('\n');
+    char buf[255];
+    sprintf(buf, "%lu", count_cycles);
+    __putstr("Cycles: "); __putstr(buf); __putchar('\n');
+
+    sprintf(buf, "%lu", count_instrs);
+    __putstr("Instrs: "); __putstr(buf); __putchar('\n');
     
     __putstr("Verify Bechmark...\n");
 

@@ -45,13 +45,13 @@ localparam CFU_BNE      = {2'b00, 3'b110};
 localparam CFU_EBREAK   = {2'b01, 3'b001};
 localparam CFU_ECALL    = {2'b01, 3'b010};
 localparam CFU_MRET     = {2'b01, 3'b100};
-localparam CFU_JMP      = {2'b10, 3'b001};
 localparam CFU_JALI     = {2'b10, 3'b010};
 localparam CFU_JALR     = {2'b10, 3'b100};
 localparam CFU_PT_C     = {2'b11, 3'b001};
 localparam CFU_PT_W     = {2'b11, 3'b000};
 localparam CFU_PNT_C    = {2'b11, 3'b010};
 localparam CFU_PNT_W    = {2'b11, 3'b011};
+localparam CFU_LINK     = {2'b11, 3'b111};
 
 localparam CF_PREDICT_TAKEN     = 1'b1;
 localparam CF_PREDICT_NOT_TAKEN = 1'b0;
